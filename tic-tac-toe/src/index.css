@@ -1,0 +1,112 @@
+:root {
+  /* Colors */
+  --color-text: rgb(255, 255, 255);
+  --color-accent: rgb(255, 64, 0);
+  --color-header-text: var(--color-text);
+  --color-error-text: rgb(200, 0, 0);
+  --color-error-back: rgb(249, 208, 208);
+  --color-back: rgb(177, 192, 236);
+  --color-button-back: rgb(250, 249, 246);
+  --color-button-back-hover: rgba(244, 241, 238, 0.873);
+  --color-button-text: var(--color-accent);
+
+  /* Font sizes*/
+  --font-size: x-large;
+  --font-size-button: x-large;
+  --font-size-input: large;
+
+  /* Border radiuses */
+  --border-radius-control: 0.5rem;
+}
+
+@font-face {
+  font-family: 'JMH SALOON';
+  src: local('JMH SALOON'), url('./assets/fonts/jmh-saloon/JMH\ SALOON.ttf') format('truetype');
+  font-weight: bold;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+    'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-size: large;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-back);
+  color: var(--color-text);
+}
+
+h1 {
+  text-shadow: 4px 4px var(--color-accent);
+  color: var(--color-header-text);
+  font-size: 4rem;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+button {
+  margin: 0.5rem;
+  padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+  height: 3rem;
+  font-size: var(--font-size-button);
+  color: #3333aa;
+  border: 0;
+  border-radius: var(--border-radius-control);
+  background-color: var(--color-button-back);
+  color: var(--color-button-text);
+}
+
+button:hover {
+  color: var(--color-button-back);
+  background-color: var(--color-button-text);
+}
+
+.button-inverse {
+  color: var(--color-button-back);
+  background-color: var(--color-button-text);
+}
+
+.button-inverse:hover {
+  background-color: var(--color-button-back);
+  color: var(--color-button-text);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+input {
+  margin: 0.5rem;
+}
+
+input[type='text'],
+input[type='password'],
+input[type='email'] {
+  min-width: 20rem;
+  height: 2rem;
+  font-size: var(--font-size-input);
+  border-radius: var(--border-radius-control);
+  border: none;
+  padding: 0.5rem;
+}
+
+main {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.errorContainer {
+  padding: 1rem;
+}
+
+.page-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+

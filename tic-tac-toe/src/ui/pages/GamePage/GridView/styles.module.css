@@ -1,0 +1,28 @@
+.GridView {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(246, 246, 185);
+  padding: 0.5rem;
+  border-radius: 1rem;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(236, 237, 228);
+}
+
+.cell {
+  width: 3rem;
+  height: 3rem;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: aqua;
+  border-radius: 0.5rem;
+  margin: 1px;
+}
