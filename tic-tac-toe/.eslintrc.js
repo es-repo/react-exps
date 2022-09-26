@@ -24,6 +24,7 @@ module.exports = {
     '@typescript-eslint/prefer-nullish-coalescing': 'error',
     '@typescript-eslint/prefer-optional-chain': 'error',
     '@typescript-eslint/require-array-sort-compare': 'error',
+    '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/array-type': [
       'error',
       {

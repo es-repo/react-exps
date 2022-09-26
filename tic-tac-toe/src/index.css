@@ -2,11 +2,12 @@
   /* Colors */
   --color-text: rgb(255, 255, 255);
   --color-accent: rgb(255, 64, 0);
+  --color-accent-light: rgb(255, 160, 0);
   --color-header-text: var(--color-text);
   --color-error-text: rgb(200, 0, 0);
   --color-error-back: rgb(249, 208, 208);
   --color-back: rgb(177, 192, 236);
-  --color-button-back: rgb(250, 249, 246);
+  --color-button-back: rgb(245, 245, 245);
   --color-button-back-hover: rgba(244, 241, 238, 0.873);
   --color-button-text: var(--color-accent);
 
@@ -29,17 +30,27 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
     'Droid Sans', 'Helvetica Neue', sans-serif;
-  font-size: large;
+  font-size: var(--font-size);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--color-back);
   color: var(--color-text);
 }
 
+h1,
+h2 {
+  line-height: 1rem;
+  color: var(--color-header-text);
+}
+
 h1 {
   text-shadow: 4px 4px var(--color-accent);
-  color: var(--color-header-text);
   font-size: 4rem;
+}
+
+h2 {
+  text-shadow: 3px 3px var(--color-accent);
+  font-size: 3rem;
 }
 
 code {

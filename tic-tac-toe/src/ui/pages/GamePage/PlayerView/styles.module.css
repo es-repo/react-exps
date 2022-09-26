@@ -1,0 +1,22 @@
+.PlayerView {
+  background-color: var(--color-button-back);
+  display: flex;
+  align-items: center;
+  min-width: 15rem;
+  color: var(--color-accent);
+  font-weight: bold;
+  border-radius: 0.5rem;
+  height: 3rem;
+  padding: 1rem;
+}
+
+.pieceViewContainer {
+  margin-right: 10px;
+  width: 40px;
+  height: 40px;
+}
+
+.isNext {
+  border: 0.5rem solid var(--color-accent);
+  border-radius: 1rem;
+}

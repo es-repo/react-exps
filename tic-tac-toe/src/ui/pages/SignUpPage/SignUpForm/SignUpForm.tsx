@@ -28,8 +28,8 @@ export default function SignUpForm(props: SignUpFormProps) {
       <input type='email' placeholder='your@email.com' required value={email} onChange={onEmailInputChange} />
       <input type='password' placeholder='password' required value={password} onChange={onPasswordInputChange} />
       <div>
-        <input type='checkbox' checked={agreementsAccepted} onChange={onAgreementsAcceptedCheckboxChange} /> Please
-        accept our agreements.
+        <input type='checkbox' checked={agreementsAccepted} onChange={onAgreementsAcceptedCheckboxChange} />
+        Please agree with our agreements.
       </div>
       <button type='submit'>Create account</button>
     </form>

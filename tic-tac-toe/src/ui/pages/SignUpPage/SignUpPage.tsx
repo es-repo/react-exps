@@ -50,7 +50,6 @@ export default function SignUpPage(props: SignUpPageProps) {
   return (
     <main>
       <div className='page-content'>
-        <h1>New account registration</h1>
         <SignUpForm onFormSubmit={onFormSubmit} />
         {isPending && <LoadingIndicator />}
         <div className='errorContainer'>

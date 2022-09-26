@@ -1,0 +1,39 @@
+.PieceView {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.PieceOView {
+  height: 50%;
+  width: 50%;
+  border: 10px solid green;
+  border-radius: 50%;
+}
+
+.PieceXView {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.PieceXViewStick {
+  width: 100%;
+  height: 10px;
+  border-radius: 4px;
+  background-color: red;
+  position: absolute;
+  top: 48%;
+}
+
+.PieceXViewStick1 {
+  transform: rotate(45deg);
+}
+
+.PieceXViewStick2 {
+  transform: rotate(-45deg);
+}

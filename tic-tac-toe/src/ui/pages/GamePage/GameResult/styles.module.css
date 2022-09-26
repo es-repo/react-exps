@@ -1,0 +1,11 @@
+.GameResult {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pieceViewContainer {
+  width: 40px;
+  height: 40px;
+  margin-right: 0.5rem;
+}
