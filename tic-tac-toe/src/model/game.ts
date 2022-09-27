@@ -2,9 +2,13 @@ import { create2dArray } from '../utils/array-utils';
 
 export type Piece = 'O' | 'X';
 
-export interface Move {
+export interface Coord {
   x: number;
   y: number;
+}
+
+export interface Move {
+  coord: Coord;
 }
 
 export type Grid = (Piece | null)[][];
@@ -31,6 +35,7 @@ export interface GameState {
 
 export interface GameResult {
   wonPlayer: Player | null;
+  winLine: Coord[] | null;
 }
 
 export function createGame(size: number, player1Id: string, player2Id: string): [GameState, GameReducer] {
@@ -62,23 +67,24 @@ function nextMove(game: GameState, move: Move, sameInLineCount: number): GameSta
     return game;
   }
 
-  if (game.grid[move.x][move.y] != null) {
+  if (game.grid[move.coord.x][move.coord.y] != null) {
     return game;
   }
 
   const nextGame = JSON.parse(JSON.stringify(game)) as GameState;
 
-  nextGame.grid[move.x][move.y] = nextGame.nextPlayer!.piece;
+  nextGame.grid[move.coord.x][move.coord.y] = nextGame.nextPlayer!.piece;
 
   nextGame.nextPlayer = nextGame.nextPlayer!.id == nextGame.player1.id ? nextGame.player2 : nextGame.player1;
 
-  if (hasSamePiecesInRow(nextGame.grid, game.nextPlayer.piece, sameInLineCount)) {
-    nextGame.result = { wonPlayer: game.nextPlayer };
+  const winLine = findLine(nextGame.grid, game.nextPlayer.piece, sameInLineCount);
+  if (winLine != null) {
+    nextGame.result = { wonPlayer: game.nextPlayer, winLine };
     nextGame.nextPlayer = null;
   }
 
   if (gridIsFull(nextGame.grid)) {
-    nextGame.result = { wonPlayer: null };
+    nextGame.result = { wonPlayer: null, winLine: null };
     nextGame.nextPlayer = null;
   }
 
@@ -101,56 +107,56 @@ function gridIsFull(grid: Grid): boolean {
   return true;
 }
 
-function hasSamePiecesInRow(grid: Grid, piece: Piece, requiredCount: number): boolean {
+function findLine(grid: Grid, piece: Piece, requiredCount: number): Coord[] | null {
   return (
-    rowHasSamePiecesInRow(grid, piece, requiredCount) ||
-    columnHasSamePiecesInRow(grid, piece, requiredCount) ||
-    diagonalHasSamePiecesInRow(grid, piece, requiredCount)
+    findLineInRows(grid, piece, requiredCount) ??
+    findLineInColumns(grid, piece, requiredCount) ??
+    findLineInDiagonals(grid, piece, requiredCount)
   );
 }
 
-function rowHasSamePiecesInRow(grid: Grid, piece: Piece, requiredCount: number): boolean {
+function findLineInRows(grid: Grid, piece: Piece, requiredCount: number): Coord[] | null {
   for (let i = 0; i < grid.length; i++) {
-    let count = 0;
+    const line: Coord[] = [];
     for (let j = 0; j < grid[i].length; j++) {
       if (grid[i][j] == piece) {
-        count++;
+        line.push({ x: i, y: j });
       } else {
-        count = 0;
+        line.length = 0;
       }
 
-      if (count == requiredCount) {
-        return true;
+      if (line.length == requiredCount) {
+        return line;
       }
     }
   }
 
-  return false;
+  return null;
 }
 
-function columnHasSamePiecesInRow(grid: Grid, piece: Piece, requiredCount: number): boolean {
+function findLineInColumns(grid: Grid, piece: Piece, requiredCount: number): Coord[] | null {
   for (let j = 0; j < grid.length; j++) {
-    let count = 0;
+    const line: Coord[] = [];
     for (let i = 0; i < grid[0].length; i++) {
       if (grid[i][j] == piece) {
-        count++;
+        line.push({ x: i, y: j });
       } else {
-        count = 0;
+        line.length = 0;
       }
 
-      if (count == requiredCount) {
-        return true;
+      if (line.length == requiredCount) {
+        return line;
       }
     }
   }
 
-  return false;
+  return null;
 }
 
-function diagonalHasSamePiecesInRow(grid: Grid, piece: Piece, requiredCount: number): boolean {
+function findLineInDiagonals(grid: Grid, piece: Piece, requiredCount: number): Coord[] | null {
   for (let i = 0; i < grid.length; i++) {
     for (let j = 0; j < grid[i].length; j++) {
-      let count = 0;
+      const line: Coord[] = [];
       for (let k = 0; k < requiredCount; k++) {
         const x = i + k;
         if (x >= grid.length) {
@@ -163,17 +169,17 @@ function diagonalHasSamePiecesInRow(grid: Grid, piece: Piece, requiredCount: num
         }
 
         if (grid[x][y] == piece) {
-          count++;
+          line.push({ x, y });
         } else {
-          count = 0;
+          line.length = 0;
         }
 
-        if (count == requiredCount) {
-          return true;
+        if (line.length == requiredCount) {
+          return line;
         }
       }
 
-      count = 0;
+      line.length = 0;
       for (let k = 0; k < requiredCount; k++) {
         const x = i + k;
         if (x >= grid.length) {
@@ -186,19 +192,19 @@ function diagonalHasSamePiecesInRow(grid: Grid, piece: Piece, requiredCount: num
         }
 
         if (grid[x][y] == piece) {
-          count++;
+          line.push({ x, y });
         } else {
-          count = 0;
+          line.length = 0;
         }
 
-        if (count == requiredCount) {
-          return true;
+        if (line.length == requiredCount) {
+          return line;
         }
       }
     }
   }
 
-  return false;
+  return null;
 }
 
 export type GameActionType = 'nextMove' | 'undoPrevMove';

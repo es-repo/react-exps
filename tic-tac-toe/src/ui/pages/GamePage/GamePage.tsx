@@ -12,7 +12,7 @@ export default function GamePage(props: GamePageProps) {
   const navigate = useNavigate();
 
   const player1Id = 'user1@email.com';
-  const player2Id = 'user2@email.com';
+  const player2Id = 'opponent@email.com';
   const [gameState, gameReducer] = createGame(props.gameSize, player1Id, player2Id);
 
   const [isGameOver, setIsGameOver] = useState(false);

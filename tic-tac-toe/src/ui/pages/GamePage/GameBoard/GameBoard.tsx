@@ -15,7 +15,7 @@ export default function GameBoard(props: GameBoardProps) {
   const [gameState, gameDispatch] = useReducer(props.gameReducer, props.initialGameState);
 
   const onGridViewClick = (x: number, y: number) => {
-    const moveNextAction: NextMoveAction = { type: 'nextMove', move: { x, y } };
+    const moveNextAction: NextMoveAction = { type: 'nextMove', move: { coord: { x, y } } };
     gameDispatch(moveNextAction);
   };
 
@@ -23,6 +23,7 @@ export default function GameBoard(props: GameBoardProps) {
 
   if (isGameOver()) {
     props.onGameOver();
+    console.log(gameState.result?.winLine);
   }
 
   const onUndoPrevMove = () => {
@@ -37,7 +38,7 @@ export default function GameBoard(props: GameBoardProps) {
         <GameResult isGameOver={isGameOver()} wonPlayer={gameState.result?.wonPlayer ?? null} />
         <PlayerView player={gameState.player2} isNext={gameState.nextPlayer == gameState.player2} />
       </div>
-      <GridView grid={gameState.grid} onClick={onGridViewClick} />
+      <GridView grid={gameState.grid} winLine={gameState.result?.winLine ?? null} onClick={onGridViewClick} />
     </div>
   );
 }

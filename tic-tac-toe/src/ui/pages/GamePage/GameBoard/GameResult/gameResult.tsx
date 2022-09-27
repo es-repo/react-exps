@@ -18,7 +18,7 @@ export default function GameResult(props: GameResultProps) {
       {props.wonPlayer != null ? (
         <>
           <div className={styles.pieceViewContainer}>
-            <PieceView piece={props.wonPlayer.piece} />
+            <PieceView piece={props.wonPlayer.piece} isWin={false} />
           </div>
           <h2>Won!</h2>
         </>
