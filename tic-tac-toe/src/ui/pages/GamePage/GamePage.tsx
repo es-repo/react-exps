@@ -13,7 +13,7 @@ export default function GamePage(props: GamePageProps) {
 
   const player1Id = 'user1@email.com';
   const player2Id = 'user2@email.com';
-  const game = createGame(props.gameSize, player1Id, player2Id);
+  const [gameState, gameReducer] = createGame(props.gameSize, player1Id, player2Id);
 
   const [isGameOver, setIsGameOver] = useState(false);
 
@@ -28,7 +28,7 @@ export default function GamePage(props: GamePageProps) {
   return (
     <main>
       <div className='page-content'>
-        <GameBoard onGameOver={onGameOver} game={game} />
+        <GameBoard onGameOver={onGameOver} initialGameState={gameState} gameReducer={gameReducer} />
         {isGameOver && (
           <button className='button-inverse' onClick={onNewGameClick}>
             New game

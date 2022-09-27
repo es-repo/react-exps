@@ -17,14 +17,16 @@ export default function App() {
   };
 
   return (
-    <Router>
-      <Routes>
-        <Route path={routes.home.path} element={<HomePage />} />
-        <Route path={routes.signUp.path} element={<SignUpPage operations={{ signUp: signUpImpl }} />} />
-        <Route path={routes.signIn.path} element={<SignInPage operations={{ signIn: signInImpl }} />} />
-        <Route path={routes.menu.path} element={<MenuPage onGameSizeSelected={onGameSizeSelected} />} />
-        <Route path={routes.game.path} element={<GamePage gameSize={gameSize} />} />
-      </Routes>
-    </Router>
+    <React.StrictMode>
+      <Router>
+        <Routes>
+          <Route path={routes.home.path} element={<HomePage />} />
+          <Route path={routes.signUp.path} element={<SignUpPage operations={{ signUp: signUpImpl }} />} />
+          <Route path={routes.signIn.path} element={<SignInPage operations={{ signIn: signInImpl }} />} />
+          <Route path={routes.menu.path} element={<MenuPage onGameSizeSelected={onGameSizeSelected} />} />
+          <Route path={routes.game.path} element={<GamePage gameSize={gameSize} />} />
+        </Routes>
+      </Router>
+    </React.StrictMode>
   );
 }

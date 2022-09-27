@@ -3,8 +3,8 @@ import { SignUp, SignUpData } from '../../../model/accounts/signUp';
 import SignUpForm from './SignUpForm/SignUpForm';
 import { useNavigate } from 'react-router-dom';
 import routes from '../../routes';
-import ErrorMessage from '../../controls/ErrorMessage/ErrorMessage';
-import LoadingIndicator from '../../controls/LoadingIndicator/LoadingIndicator';
+import ErrorView from '../../controls/ErrorView/ErrorView';
+import Spinner from '../../controls/Spinner/Spinner';
 
 export interface SignUpPageProps {
   operations: {
@@ -51,9 +51,9 @@ export default function SignUpPage(props: SignUpPageProps) {
     <main>
       <div className='page-content'>
         <SignUpForm onFormSubmit={onFormSubmit} />
-        {isPending && <LoadingIndicator />}
+        {isPending && <Spinner />}
         <div className='errorContainer'>
-          <ErrorMessage text={errorMessageText} />
+          <ErrorView text={errorMessageText} />
         </div>
       </div>
     </main>

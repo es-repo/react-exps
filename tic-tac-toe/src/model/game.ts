@@ -14,13 +14,6 @@ export interface Player {
   piece: Piece;
 }
 
-export interface Game {
-  getState: () => GameState;
-  nextMove: (move: Move) => void;
-  undoPrevMove: () => void;
-  isGameOver: () => boolean;
-}
-
 const sameInLineCounts: Record<number, number> = {
   [3]: 3,
   [5]: 4,
@@ -40,7 +33,7 @@ export interface GameResult {
   wonPlayer: Player | null;
 }
 
-export function createGame(size: number, player1Id: string, player2Id: string): Game {
+export function createGame(size: number, player1Id: string, player2Id: string): [GameState, GameReducer] {
   const grid = create2dArray<Piece | null>(size, null);
 
   const player1Piece: Piece = Math.random() < 0.5 ? 'O' : 'X';
@@ -49,9 +42,9 @@ export function createGame(size: number, player1Id: string, player2Id: string): 
   const player1: Player = { id: player1Id, piece: player1Piece };
   const player2: Player = { id: player2Id, piece: player2Piece };
 
-  const nextPlayer: Player = player1;
+  const nextPlayer: Player = player1Piece == 'X' ? player1 : player2;
 
-  let gameState: GameState = {
+  const state: GameState = {
     player1,
     player2,
     nextPlayer,
@@ -59,21 +52,9 @@ export function createGame(size: number, player1Id: string, player2Id: string): 
     result: null
   };
 
-  const sameInLineCount = sameInLineCounts[size];
+  const reducer = createGameReducer(sameInLineCounts[size]);
 
-  return {
-    getState: () => gameState,
-
-    nextMove: (move: Move) => {
-      gameState = nextMove(gameState, move, sameInLineCount);
-    },
-
-    undoPrevMove: () => {
-      gameState = undoPrevMove(gameState);
-    },
-
-    isGameOver: () => gameState.result != null
-  };
+  return [state, reducer];
 }
 
 function nextMove(game: GameState, move: Move, sameInLineCount: number): GameState {
@@ -220,9 +201,29 @@ function diagonalHasSamePiecesInRow(grid: Grid, piece: Piece, requiredCount: num
   return false;
 }
 
-export const gameActions = {
-  nextMove: 'nextMove',
-  undoPrevMove: 'undoPrevMove'
-};
+export type GameActionType = 'nextMove' | 'undoPrevMove';
 
-//export function reducer
+export interface GameAction {
+  type: GameActionType;
+}
+
+export interface NextMoveAction extends GameAction {
+  move: Move;
+}
+
+export type UndoPrevMoveAction = GameAction;
+
+export type GameReducer = (gameState: GameState, action: GameAction) => GameState;
+
+export function createGameReducer(sameInLineCount: number): GameReducer {
+  return function gameReducer(gameState: GameState, action: GameAction): GameState {
+    switch (action.type) {
+      case 'nextMove':
+        return nextMove(gameState, (action as NextMoveAction).move, sameInLineCount);
+      case 'undoPrevMove':
+        return undoPrevMove(gameState);
+      default:
+        throw new Error();
+    }
+  };
+}

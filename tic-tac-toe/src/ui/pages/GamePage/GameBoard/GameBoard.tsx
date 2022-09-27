@@ -1,38 +1,40 @@
-import React, { useState } from 'react';
-import { Game, GameState, Move } from '../../../../model/game';
+import React, { useReducer } from 'react';
+import { GameReducer, GameState, NextMoveAction, UndoPrevMoveAction } from '../../../../model/game';
 import GameResult from './GameResult/gameResult';
 import GridView from './GridView/GridView';
 import PlayerView from './PlayerView/PlayerView';
 import styles from './styles.module.css';
 
 export interface GameBoardProps {
-  game: Game;
+  initialGameState: GameState;
+  gameReducer: GameReducer;
   onGameOver: () => void;
 }
 
 export default function GameBoard(props: GameBoardProps) {
-  const [gameState, setGameState] = useState<GameState>(props.game.getState());
+  const [gameState, gameDispatch] = useReducer(props.gameReducer, props.initialGameState);
 
   const onGridViewClick = (x: number, y: number) => {
-    const move: Move = { x, y };
-    props.game.nextMove(move);
-    setGameState(props.game.getState());
-
-    if (props.game.isGameOver()) {
-      props.onGameOver();
-    }
+    const moveNextAction: NextMoveAction = { type: 'nextMove', move: { x, y } };
+    gameDispatch(moveNextAction);
   };
 
-  const onUndo = () => {
-    props.game.undoPrevMove();
-    setGameState(props.game.getState());
+  const isGameOver = () => gameState.result != null;
+
+  if (isGameOver()) {
+    props.onGameOver();
+  }
+
+  const onUndoPrevMove = () => {
+    const undoPrevMoveAction: UndoPrevMoveAction = { type: 'undoPrevMove' };
+    gameDispatch(undoPrevMoveAction);
   };
 
   return (
     <div className={styles.GameBoard}>
       <div className={styles.playersPanel}>
         <PlayerView player={gameState.player1} isNext={gameState.nextPlayer == gameState.player1} />
-        <GameResult isGameOver={props.game.isGameOver()} wonPlayer={props.game.getState().result?.wonPlayer ?? null} />
+        <GameResult isGameOver={isGameOver()} wonPlayer={gameState.result?.wonPlayer ?? null} />
         <PlayerView player={gameState.player2} isNext={gameState.nextPlayer == gameState.player2} />
       </div>
       <GridView grid={gameState.grid} onClick={onGridViewClick} />

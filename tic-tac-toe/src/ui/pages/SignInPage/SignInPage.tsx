@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import routes from '../../routes';
-import ErrorMessage from '../../controls/ErrorMessage/ErrorMessage';
-import LoadingIndicator from '../../controls/LoadingIndicator/LoadingIndicator';
+import ErrorView from '../../controls/ErrorView/ErrorView';
+import Spinner from '../../controls/Spinner/Spinner';
 import { SignIn, SignInData } from '../../../model/accounts/signIn';
 import SignInForm from './SignInForm/SignInForm';
 
@@ -51,9 +51,9 @@ export default function SignInPage(props: SignInPageProps) {
     <main>
       <div className='page-content'>
         <SignInForm onFormSubmit={onFormSubmit} />
-        {isPending && <LoadingIndicator />}
+        {isPending && <Spinner />}
         <div className='errorContainer'>
-          <ErrorMessage text={errorMessageText} />
+          <ErrorView text={errorMessageText} />
         </div>
       </div>
     </main>
