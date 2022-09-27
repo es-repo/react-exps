@@ -1,3 +1,10 @@
+.GameBoard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .playersPanel {
   display: flex;
   align-items: center;

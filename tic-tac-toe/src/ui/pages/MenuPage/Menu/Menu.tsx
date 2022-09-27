@@ -4,7 +4,7 @@ import styles from './styles.module.css';
 
 export interface MenuProps {
   sizes: number[];
-  onSizeSelected: (size: number) => void;
+  onGameSizeSelected: (size: number) => void;
 }
 
 export default function Menu(props: MenuProps) {
@@ -13,7 +13,7 @@ export default function Menu(props: MenuProps) {
       <h1>Select size</h1>
       <nav className={styles.MenuItems}>
         {props.sizes.map(size => (
-          <SizeMenuItem size={size} key={size} onClick={props.onSizeSelected} />
+          <SizeMenuItem size={size} key={size} onClick={props.onGameSizeSelected} />
         ))}
       </nav>
     </div>

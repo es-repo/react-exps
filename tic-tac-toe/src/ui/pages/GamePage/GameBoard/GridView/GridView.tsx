@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Grid } from '../../../../model/game';
+import { Grid } from '../../../../../model/game';
 import PieceView from '../PieceView/PieceView';
 import styles from './styles.module.css';
 

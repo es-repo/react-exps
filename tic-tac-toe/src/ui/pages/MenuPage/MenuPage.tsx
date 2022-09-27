@@ -1,26 +1,26 @@
 import React from 'react';
-import { createSearchParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import routes from '../../routes';
 import Menu from './Menu/Menu';
 
 const sizes = [3, 5, 10];
 
-export default function MenuPage() {
+export interface MenuPageProps {
+  onGameSizeSelected: (size: number) => void;
+}
+
+export default function MenuPage(props: MenuPageProps) {
   const navigate = useNavigate();
 
-  const onSizeSelected = (size: number) => {
-    navigate({
-      pathname: routes.game.path,
-      search: createSearchParams({
-        size: size.toString()
-      }).toString()
-    });
+  const onGameSizeSelected = (size: number) => {
+    props.onGameSizeSelected(size);
+    navigate(routes.game.path);
   };
 
   return (
     <main>
       <div className='page-content'>
-        <Menu sizes={sizes} onSizeSelected={onSizeSelected} />
+        <Menu sizes={sizes} onGameSizeSelected={onGameSizeSelected} />
       </div>
     </main>
   );

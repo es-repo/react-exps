@@ -15,16 +15,32 @@ export interface Player {
 }
 
 export interface Game {
+  getState: () => GameState;
+  nextMove: (move: Move) => void;
+  undoPrevMove: () => void;
+  isGameOver: () => boolean;
+}
+
+const sameInLineCounts: Record<number, number> = {
+  [3]: 3,
+  [5]: 4,
+  [10]: 5,
+  [20]: 5
+};
+
+export interface GameState {
   player1: Player;
   player2: Player;
   nextPlayer: Player | null;
-  sameInRowCount: number;
   grid: Grid;
-  wonPlayer: Player | null;
-  isGameOver: boolean;
+  result: GameResult | null;
 }
 
-export function createGame(size: number, sameInRowCount: number, player1Id: string, player2Id: string): Game {
+export interface GameResult {
+  wonPlayer: Player | null;
+}
+
+export function createGame(size: number, player1Id: string, player2Id: string): Game {
   const grid = create2dArray<Piece | null>(size, null);
 
   const player1Piece: Piece = Math.random() < 0.5 ? 'O' : 'X';
@@ -35,21 +51,33 @@ export function createGame(size: number, sameInRowCount: number, player1Id: stri
 
   const nextPlayer: Player = player1;
 
-  const wonPlayer: Player | null = null;
-
-  return {
+  let gameState: GameState = {
     player1,
     player2,
     nextPlayer,
-    sameInRowCount,
     grid,
-    wonPlayer,
-    isGameOver: false
+    result: null
+  };
+
+  const sameInLineCount = sameInLineCounts[size];
+
+  return {
+    getState: () => gameState,
+
+    nextMove: (move: Move) => {
+      gameState = nextMove(gameState, move, sameInLineCount);
+    },
+
+    undoPrevMove: () => {
+      gameState = undoPrevMove(gameState);
+    },
+
+    isGameOver: () => gameState.result != null
   };
 }
 
-export function nextMove(game: Game, move: Move): Game {
-  if (game.isGameOver || game.nextPlayer == null) {
+function nextMove(game: GameState, move: Move, sameInLineCount: number): GameState {
+  if (game.result != null || game.nextPlayer == null) {
     return game;
   }
 
@@ -57,24 +85,27 @@ export function nextMove(game: Game, move: Move): Game {
     return game;
   }
 
-  const nextGame = JSON.parse(JSON.stringify(game)) as Game;
+  const nextGame = JSON.parse(JSON.stringify(game)) as GameState;
 
   nextGame.grid[move.x][move.y] = nextGame.nextPlayer!.piece;
 
   nextGame.nextPlayer = nextGame.nextPlayer!.id == nextGame.player1.id ? nextGame.player2 : nextGame.player1;
 
-  if (hasSamePiecesInRow(nextGame.grid, game.nextPlayer.piece, nextGame.sameInRowCount)) {
-    nextGame.wonPlayer = game.nextPlayer;
+  if (hasSamePiecesInRow(nextGame.grid, game.nextPlayer.piece, sameInLineCount)) {
+    nextGame.result = { wonPlayer: game.nextPlayer };
     nextGame.nextPlayer = null;
-    nextGame.isGameOver = true;
   }
 
   if (gridIsFull(nextGame.grid)) {
+    nextGame.result = { wonPlayer: null };
     nextGame.nextPlayer = null;
-    nextGame.isGameOver = true;
   }
 
   return nextGame;
+}
+
+function undoPrevMove(game: GameState): GameState {
+  return game;
 }
 
 function gridIsFull(grid: Grid): boolean {
@@ -188,3 +219,10 @@ function diagonalHasSamePiecesInRow(grid: Grid, piece: Piece, requiredCount: num
 
   return false;
 }
+
+export const gameActions = {
+  nextMove: 'nextMove',
+  undoPrevMove: 'undoPrevMove'
+};
+
+//export function reducer

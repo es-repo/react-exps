@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Piece } from '../../../../model/game';
+import { Piece } from '../../../../../model/game';
 import styles from './styles.module.css';
 
 export interface PieceViewProps {
