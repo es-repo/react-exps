@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { createGame } from '../../../model/game';
+import { createGame as createGameStateAndReducer, GameReducer, GameState, waitForOpponent } from '../../../model/game';
+import Spinner from '../../controls/Spinner/Spinner';
 import routes from '../../routes';
 import GameBoard from './GameBoard/GameBoard';
+import styles from './styles.module.css';
 
 export interface GamePageProps {
   gameSize: number;
@@ -11,9 +13,19 @@ export interface GamePageProps {
 export default function GamePage(props: GamePageProps) {
   const navigate = useNavigate();
 
-  const player1Id = 'user1@email.com';
-  const player2Id = 'opponent@email.com';
-  const [gameState, gameReducer] = createGame(props.gameSize, player1Id, player2Id);
+  const [gameStateAndReducer, setGameStateAndReducer] = useState<[GameState, GameReducer] | null>(null);
+
+  useEffect(() => {
+    const effect = async () => {
+      const opponentId = await waitForOpponent();
+
+      const player1Id = 'user1@email.com';
+      const gameStateAndReducer = createGameStateAndReducer(props.gameSize, player1Id, opponentId);
+      setGameStateAndReducer(gameStateAndReducer);
+    };
+
+    void effect();
+  });
 
   const [isGameOver, setIsGameOver] = useState(false);
 
@@ -28,11 +40,24 @@ export default function GamePage(props: GamePageProps) {
   return (
     <main>
       <div className='page-content'>
-        <GameBoard onGameOver={onGameOver} initialGameState={gameState} gameReducer={gameReducer} />
-        {isGameOver && (
-          <button className='button-inverse' onClick={onNewGameClick}>
-            New game
-          </button>
+        {gameStateAndReducer == null ? (
+          <div className={styles.waitingOpponentContainer}>
+            <h1>Waiting for an opponent...</h1>
+            <Spinner />
+          </div>
+        ) : (
+          <>
+            <GameBoard
+              onGameOver={onGameOver}
+              initialGameState={gameStateAndReducer[0]}
+              gameReducer={gameStateAndReducer[1]}
+            />
+            {isGameOver && (
+              <button className='button-inverse' onClick={onNewGameClick}>
+                New game
+              </button>
+            )}
+          </>
         )}
       </div>
     </main>

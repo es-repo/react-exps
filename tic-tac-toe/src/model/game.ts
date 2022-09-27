@@ -1,4 +1,5 @@
 import { create2dArray } from '../utils/array-utils';
+import { delay } from '../utils/promise-utils';
 
 export type Piece = 'O' | 'X';
 
@@ -36,6 +37,11 @@ export interface GameState {
 export interface GameResult {
   wonPlayer: Player | null;
   winLine: Coord[] | null;
+}
+
+export async function waitForOpponent(): Promise<string> {
+  await delay(3000);
+  return 'opponent@email.com';
 }
 
 export function createGame(size: number, player1Id: string, player2Id: string): [GameState, GameReducer] {
