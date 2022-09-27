@@ -8,9 +8,16 @@ import SignInPage from '../pages/SignInPage/SignInPage';
 import { signIpImpl as signInImpl } from '../../model/accounts/signIn';
 import MenuPage from '../pages/MenuPage/MenuPage';
 import GamePage from '../pages/GamePage/GamePage';
+import { Account } from '../../model/accounts/account';
+import AccessDeniedPage from '../pages/AccessDeniedPage/AccessDeniedPage';
 
 export default function App() {
+  const [account, setAccount] = useState<Account | null>(null);
   const [gameSize, setGameSize] = useState<number>(3);
+
+  const onSignedIn = (account: Account) => {
+    setAccount(account);
+  };
 
   const onGameSizeSelected = (size: number) => {
     setGameSize(size);
@@ -22,11 +29,24 @@ export default function App() {
         <Routes>
           <Route path={routes.home.path} element={<HomePage />} />
           <Route path={routes.signUp.path} element={<SignUpPage operations={{ signUp: signUpImpl }} />} />
-          <Route path={routes.signIn.path} element={<SignInPage operations={{ signIn: signInImpl }} />} />
-          <Route path={routes.menu.path} element={<MenuPage onGameSizeSelected={onGameSizeSelected} />} />
-          <Route path={routes.game.path} element={<GamePage gameSize={gameSize} />} />
+          <Route
+            path={routes.signIn.path}
+            element={<SignInPage operations={{ signIn: signInImpl }} onSignedIn={onSignedIn} />}
+          />
+          <Route
+            path={routes.menu.path}
+            element={withPermissions(account, <MenuPage onGameSizeSelected={onGameSizeSelected} />)}
+          />
+          <Route
+            path={routes.game.path}
+            element={withPermissions(account, <GamePage gameSize={gameSize} account={account} />)}
+          />
         </Routes>
       </Router>
     </React.StrictMode>
   );
+}
+
+function withPermissions(account: Account | null, page: React.ReactNode): React.ReactNode {
+  return account == null ? <AccessDeniedPage /> : page;
 }

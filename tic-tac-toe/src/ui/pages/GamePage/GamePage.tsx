@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { Account } from '../../../model/accounts/account';
 import { createGame as createGameStateAndReducer, GameReducer, GameState, waitForOpponent } from '../../../model/game';
 import Spinner from '../../controls/Spinner/Spinner';
 import routes from '../../routes';
@@ -8,6 +9,7 @@ import styles from './styles.module.css';
 
 export interface GamePageProps {
   gameSize: number;
+  account: Account | null;
 }
 
 export default function GamePage(props: GamePageProps) {
@@ -19,8 +21,7 @@ export default function GamePage(props: GamePageProps) {
     const effect = async () => {
       const opponentId = await waitForOpponent();
 
-      const player1Id = 'user1@email.com';
-      const gameStateAndReducer = createGameStateAndReducer(props.gameSize, player1Id, opponentId);
+      const gameStateAndReducer = createGameStateAndReducer(props.gameSize, props.account!.email, opponentId);
       setGameStateAndReducer(gameStateAndReducer);
     };
 
@@ -36,6 +37,10 @@ export default function GamePage(props: GamePageProps) {
   const onNewGameClick = () => {
     navigate(routes.menu.path);
   };
+
+  if (props.account == null) {
+    return null;
+  }
 
   return (
     <main>

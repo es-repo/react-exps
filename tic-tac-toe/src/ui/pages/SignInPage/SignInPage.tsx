@@ -5,11 +5,14 @@ import ErrorView from '../../controls/ErrorView/ErrorView';
 import Spinner from '../../controls/Spinner/Spinner';
 import { SignIn, SignInData } from '../../../model/accounts/signIn';
 import SignInForm from './SignInForm/SignInForm';
+import { Account } from '../../../model/accounts/account';
 
 export interface SignInPageProps {
   operations: {
     signIn: SignIn;
   };
+
+  onSignedIn: (account: Account) => void;
 }
 
 export default function SignInPage(props: SignInPageProps) {
@@ -34,6 +37,7 @@ export default function SignInPage(props: SignInPageProps) {
       switch (result.type) {
         case 'ok':
           navigate(routes.menu.path);
+          props.onSignedIn(result.value);
           break;
         case 'err':
           setErrorMessageText(result.value);
@@ -41,7 +45,7 @@ export default function SignInPage(props: SignInPageProps) {
       }
     }
     void asyncEffect();
-  }, [navigate, props.operations, signInData]);
+  }, [navigate, props, props.operations, signInData]);
 
   const onFormSubmit = (signInData: SignInData) => {
     setSignInData(signInData);

@@ -23,7 +23,6 @@ export default function GameBoard(props: GameBoardProps) {
 
   if (isGameOver()) {
     props.onGameOver();
-    console.log(gameState.result?.winLine);
   }
 
   const onUndoPrevMove = () => {
