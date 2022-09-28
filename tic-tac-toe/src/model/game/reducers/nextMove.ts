@@ -1,74 +1,11 @@
-import { create2dArray } from '../utils/array-utils';
-import { delay } from '../utils/promise-utils';
+import { GameAction } from '../gameReducer';
+import { Coord, GameState, Grid, Move, Piece } from '../gameState';
 
-export type Piece = 'O' | 'X';
-
-export interface Coord {
-  x: number;
-  y: number;
+export interface NextMoveAction extends GameAction {
+  move: Move;
 }
 
-export interface Move {
-  coord: Coord;
-}
-
-export type Grid = (Piece | null)[][];
-
-export interface Player {
-  id: string;
-  piece: Piece;
-}
-
-const sameInLineCounts: Record<number, number> = {
-  [3]: 3,
-  [5]: 4,
-  [10]: 5,
-  [20]: 5
-};
-
-export interface GameState {
-  player1: Player;
-  player2: Player;
-  nextPlayer: Player | null;
-  grid: Grid;
-  result: GameResult | null;
-}
-
-export interface GameResult {
-  wonPlayer: Player | null;
-  winLine: Coord[] | null;
-}
-
-export async function waitForOpponent(): Promise<string> {
-  await delay(3000);
-  return 'opponent@email.com';
-}
-
-export function createGame(size: number, player1Id: string, player2Id: string): [GameState, GameReducer] {
-  const grid = create2dArray<Piece | null>(size, null);
-
-  const player1Piece: Piece = Math.random() < 0.5 ? 'O' : 'X';
-  const player2Piece: Piece = player1Piece == 'O' ? 'X' : 'O';
-
-  const player1: Player = { id: player1Id, piece: player1Piece };
-  const player2: Player = { id: player2Id, piece: player2Piece };
-
-  const nextPlayer: Player = player1Piece == 'X' ? player1 : player2;
-
-  const state: GameState = {
-    player1,
-    player2,
-    nextPlayer,
-    grid,
-    result: null
-  };
-
-  const reducer = createGameReducer(sameInLineCounts[size]);
-
-  return [state, reducer];
-}
-
-function nextMove(game: GameState, move: Move, sameInLineCount: number): GameState {
+export default function nextMove(game: GameState, move: Move, sameInLineCount: number): GameState {
   if (game.result != null || game.nextPlayer == null) {
     return game;
   }
@@ -95,22 +32,6 @@ function nextMove(game: GameState, move: Move, sameInLineCount: number): GameSta
   }
 
   return nextGame;
-}
-
-function undoPrevMove(game: GameState): GameState {
-  return game;
-}
-
-function gridIsFull(grid: Grid): boolean {
-  for (let i = 0; i < grid.length; i++) {
-    for (let j = 0; j < grid[i].length; j++) {
-      if (grid[i][j] == null) {
-        return false;
-      }
-    }
-  }
-
-  return true;
 }
 
 function findLine(grid: Grid, piece: Piece, requiredCount: number): Coord[] | null {
@@ -213,29 +134,14 @@ function findLineInDiagonals(grid: Grid, piece: Piece, requiredCount: number): C
   return null;
 }
 
-export type GameActionType = 'nextMove' | 'undoPrevMove';
-
-export interface GameAction {
-  type: GameActionType;
-}
-
-export interface NextMoveAction extends GameAction {
-  move: Move;
-}
-
-export type UndoPrevMoveAction = GameAction;
-
-export type GameReducer = (gameState: GameState, action: GameAction) => GameState;
-
-export function createGameReducer(sameInLineCount: number): GameReducer {
-  return function gameReducer(gameState: GameState, action: GameAction): GameState {
-    switch (action.type) {
-      case 'nextMove':
-        return nextMove(gameState, (action as NextMoveAction).move, sameInLineCount);
-      case 'undoPrevMove':
-        return undoPrevMove(gameState);
-      default:
-        throw new Error();
+function gridIsFull(grid: Grid): boolean {
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < grid[i].length; j++) {
+      if (grid[i][j] == null) {
+        return false;
+      }
     }
-  };
+  }
+
+  return true;
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Player } from '../../../../../model/game';
+import { Player } from '../../../../../model/game/gameState';
 import PieceView from '../PieceView/PieceView';
 import styles from './styles.module.css';
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Coord, Grid } from '../../../../../model/game';
 import PieceView from '../PieceView/PieceView';
 import styles from './styles.module.css';
+import { Coord, Grid } from '../../../../../model/game/gameState';
 
 export interface GridViewProps {
   grid: Grid;

@@ -1,5 +1,8 @@
 import React, { useReducer } from 'react';
-import { GameReducer, GameState, NextMoveAction, UndoPrevMoveAction } from '../../../../model/game';
+import { GameReducer } from '../../../../model/game/gameReducer';
+import isGameOver, { GameState } from '../../../../model/game/gameState';
+import { NextMoveAction } from '../../../../model/game/reducers/nextMove';
+import { UndoPrevMoveAction } from '../../../../model/game/reducers/undoPrevMove';
 import GameResult from './GameResult/gameResult';
 import GridView from './GridView/GridView';
 import PlayerView from './PlayerView/PlayerView';
@@ -19,9 +22,7 @@ export default function GameBoard(props: GameBoardProps) {
     gameDispatch(moveNextAction);
   };
 
-  const isGameOver = () => gameState.result != null;
-
-  if (isGameOver()) {
+  if (isGameOver(gameState)) {
     props.onGameOver();
   }
 
@@ -34,7 +35,7 @@ export default function GameBoard(props: GameBoardProps) {
     <div className={styles.GameBoard}>
       <div className={styles.playersPanel}>
         <PlayerView player={gameState.player1} isNext={gameState.nextPlayer == gameState.player1} />
-        <GameResult isGameOver={isGameOver()} wonPlayer={gameState.result?.wonPlayer ?? null} />
+        <GameResult isGameOver={isGameOver(gameState)} wonPlayer={gameState.result?.wonPlayer ?? null} />
         <PlayerView player={gameState.player2} isNext={gameState.nextPlayer == gameState.player2} />
       </div>
       <GridView grid={gameState.grid} winLine={gameState.result?.winLine ?? null} onClick={onGridViewClick} />

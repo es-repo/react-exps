@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Account } from '../../../model/accounts/account';
-import { createGame as createGameStateAndReducer, GameReducer, GameState, waitForOpponent } from '../../../model/game';
+import createGameStateAndReducer from '../../../model/game/createGameStateAndReducer';
+import { waitForOpponent } from '../../../model/game/waitForOpponent';
+import { GameReducer } from '../../../model/game/gameReducer';
+import { GameState } from '../../../model/game/gameState';
 import Spinner from '../../controls/Spinner/Spinner';
 import routes from '../../routes';
 import GameBoard from './GameBoard/GameBoard';
