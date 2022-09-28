@@ -10,6 +10,8 @@ import MenuPage from '../pages/MenuPage/MenuPage';
 import GamePage from '../pages/GamePage/GamePage';
 import { Account } from '../../model/accounts/account';
 import AccessDeniedPage from '../pages/AccessDeniedPage/AccessDeniedPage';
+import { initiateOrJoinGameImpl } from '../../model/game/initiateGameOrJoin';
+import { waitForOpponentImpl } from '../../model/game/waitForOpponent';
 
 export default function App() {
   const [account, setAccount] = useState<Account | null>(null);
@@ -39,7 +41,14 @@ export default function App() {
           />
           <Route
             path={routes.game.path}
-            element={withPermissions(account, <GamePage gameSize={gameSize} account={account} />)}
+            element={withPermissions(
+              account,
+              <GamePage
+                operations={{ initiateOrJoinGame: initiateOrJoinGameImpl, waitForOpponent: waitForOpponentImpl }}
+                gameSize={gameSize}
+                account={account}
+              />
+            )}
           />
         </Routes>
       </Router>

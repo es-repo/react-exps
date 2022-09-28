@@ -1,6 +1,8 @@
 import { create2dArray } from '../../utils/array-utils';
 import { createGameReducer, GameReducer } from './gameReducer';
-import { GameState, Piece, Player } from './gameState';
+import { GameState } from './gameState';
+import { Piece } from './piece';
+import { Player } from './player';
 
 export const sameInLineCounts: Record<number, number> = {
   [3]: 3,
@@ -11,18 +13,12 @@ export const sameInLineCounts: Record<number, number> = {
 
 export default function createGameStateAndReducer(
   size: number,
-  player1Id: string,
-  player2Id: string
+  player1: Player,
+  player2: Player
 ): [GameState, GameReducer] {
   const grid = create2dArray<Piece | null>(size, null);
 
-  const player1Piece: Piece = Math.random() < 0.5 ? 'O' : 'X';
-  const player2Piece: Piece = player1Piece == 'O' ? 'X' : 'O';
-
-  const player1: Player = { id: player1Id, piece: player1Piece };
-  const player2: Player = { id: player2Id, piece: player2Piece };
-
-  const nextPlayer: Player = player1Piece == 'X' ? player1 : player2;
+  const nextPlayer: Player = player1.piece == 'X' ? player1 : player2;
 
   const state: GameState = {
     player1,

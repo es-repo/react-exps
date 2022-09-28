@@ -1,5 +1,6 @@
 import { GameAction } from '../gameReducer';
-import { Coord, GameState, Grid, Move, Piece } from '../gameState';
+import { Coord, GameState, Grid, Move } from '../gameState';
+import { Piece } from '../piece';
 
 export interface NextMoveAction extends GameAction {
   move: Move;
@@ -16,9 +17,12 @@ export default function nextMove(game: GameState, move: Move, sameInLineCount: n
 
   const nextGame = JSON.parse(JSON.stringify(game)) as GameState;
 
-  nextGame.grid[move.coord.x][move.coord.y] = nextGame.nextPlayer!.piece;
+  if (nextGame.nextPlayer != null) {
+    nextGame.grid[move.coord.x][move.coord.y] = nextGame.nextPlayer.piece;
+  }
 
-  nextGame.nextPlayer = nextGame.nextPlayer!.id == nextGame.player1.id ? nextGame.player2 : nextGame.player1;
+  nextGame.nextPlayer =
+    nextGame.nextPlayer!.accountId == nextGame.player1.accountId ? nextGame.player2 : nextGame.player1;
 
   const winLine = findLine(nextGame.grid, game.nextPlayer.piece, sameInLineCount);
   if (winLine != null) {

@@ -1,4 +1,5 @@
-export type Piece = 'O' | 'X';
+import { Piece } from './piece';
+import { Player } from './player';
 
 export interface Coord {
   x: number;
@@ -10,11 +11,6 @@ export interface Move {
 }
 
 export type Grid = (Piece | null)[][];
-
-export interface Player {
-  id: string;
-  piece: Piece;
-}
 
 export interface GameResult {
   wonPlayer: Player | null;

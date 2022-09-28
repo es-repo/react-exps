@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Player } from '../../../../../model/game/gameState';
+import { Player } from '../../../../../model/game/player';
 import PieceView from '../PieceView/PieceView';
 import styles from './styles.module.css';
 
@@ -15,7 +15,7 @@ export default function PlayerView(props: PlayerViewProps) {
       <div className={styles.pieceViewContainer}>
         <PieceView piece={props.player.piece} isWin={false} />
       </div>
-      <div>{props.player.id}</div>
+      <div>{props.player.accountEmail}</div>
     </div>
   );
 }

@@ -2,15 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Account } from '../../../model/accounts/account';
 import createGameStateAndReducer from '../../../model/game/createGameStateAndReducer';
-import { waitForOpponent } from '../../../model/game/waitForOpponent';
 import { GameReducer } from '../../../model/game/gameReducer';
 import { GameState } from '../../../model/game/gameState';
+import { InitiateOrJoinGame } from '../../../model/game/initiateGameOrJoin';
+import { WaitForOpponent } from '../../../model/game/waitForOpponent';
 import Spinner from '../../controls/Spinner/Spinner';
 import routes from '../../routes';
 import GameBoard from './GameBoard/GameBoard';
 import styles from './styles.module.css';
 
 export interface GamePageProps {
+  operations: {
+    initiateOrJoinGame: InitiateOrJoinGame;
+    waitForOpponent: WaitForOpponent;
+  };
   gameSize: number;
   account: Account | null;
 }
@@ -22,14 +27,18 @@ export default function GamePage(props: GamePageProps) {
 
   useEffect(() => {
     const effect = async () => {
-      const opponentId = await waitForOpponent();
+      let gameReport = await props.operations.initiateOrJoinGame(props.account!, props.gameSize);
 
-      const gameStateAndReducer = createGameStateAndReducer(props.gameSize, props.account!.email, opponentId);
-      setGameStateAndReducer(gameStateAndReducer);
+      gameReport = await props.operations.waitForOpponent(gameReport);
+
+      if (gameReport.player2 != null) {
+        const gameStateAndReducer = createGameStateAndReducer(props.gameSize, gameReport.player1, gameReport.player2);
+        setGameStateAndReducer(gameStateAndReducer);
+      }
     };
 
     void effect();
-  });
+  }, [props.account, props.gameSize, props.operations]);
 
   const [isGameOver, setIsGameOver] = useState(false);
 

@@ -3,9 +3,9 @@ import { query, where, getDocs } from 'firebase/firestore';
 import collectionDefinition from './collectionDefinition';
 import collectionRef from './collectionRef';
 
-export type FindByEmail = (email: string) => Promise<Account | null>;
+export type FindAccountByEmail = (email: string) => Promise<Account | null>;
 
-export async function findByEmail(email: string): Promise<Account | null> {
+export async function findAccountByEmail(email: string): Promise<Account | null> {
   const getByEmailQuery = query(collectionRef, where(collectionDefinition.fields.email, '==', email));
 
   const querySnapshot = await getDocs(getByEmailQuery);
@@ -13,8 +13,9 @@ export async function findByEmail(email: string): Promise<Account | null> {
     return null;
   }
 
-  const accountDoc = querySnapshot.docs[0].data();
-  const account: Account = accountDoc as Account;
+  const accountDocSnapshot = querySnapshot.docs[0];
+  const account: Account = accountDocSnapshot.data() as Account;
+  account.id = accountDocSnapshot.id;
 
   return account;
 }
