@@ -4,12 +4,11 @@ import { Account } from '../../../model/accounts/account';
 import createGameStateAndReducer from '../../../model/game/createGameStateAndReducer';
 import { GameReducer } from '../../../model/game/gameReducer';
 import { GameReport } from '../../../model/game/gameReport';
-import { GameResult, GameState, Move } from '../../../model/game/gameState';
+import { GameState, Move } from '../../../model/game/gameState';
 import { InitiateOrJoinGame } from '../../../model/game/initiateGameOrJoin';
 import { Player } from '../../../model/game/player';
 import { ReceiveMoves } from '../../../model/game/receiveMoves';
 import { SendMove } from '../../../model/game/sendMove';
-import { SendResult } from '../../../model/game/sendResult';
 import { WaitForOpponent } from '../../../model/game/waitForOpponent';
 import Spinner from '../../controls/Spinner/Spinner';
 import routes from '../../routes';
@@ -22,7 +21,6 @@ export interface GamePageProps {
     waitForOpponent: WaitForOpponent;
     sendMove: SendMove;
     receiveMoves: ReceiveMoves;
-    sendResult: SendResult;
   };
   gameSize: number;
   account: Account | null;
@@ -70,15 +68,14 @@ export default function GamePage(props: GamePageProps) {
 
   const [isGameOver, setIsGameOver] = useState(false);
 
-  const onNextMove = (move: Move) => {
+  const onNextMove = (gameState: GameState, move: Move) => {
     if (gameReport != null) {
-      void props.operations.sendMove(gameReport, move);
+      void props.operations.sendMove(gameReport, move, gameState.result);
     }
   };
 
-  const onGameOver = (gameResult: GameResult) => {
+  const onGameOver = () => {
     setIsGameOver(true);
-    void props.operations.sendResult(gameReport!, gameResult);
   };
 
   const onNewGameClick = () => {

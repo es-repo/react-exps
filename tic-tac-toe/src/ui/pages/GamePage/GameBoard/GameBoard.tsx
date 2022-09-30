@@ -2,7 +2,7 @@ import React, { useEffect, useReducer } from 'react';
 import { GameReducer } from '../../../../model/game/gameReducer';
 import isGameOver, { GameResult, GameState, Move } from '../../../../model/game/gameState';
 import { Player } from '../../../../model/game/player';
-import { canMakeMove, createNextMoveAction } from '../../../../model/game/reducers/nextMove';
+import { createNextMoveAction } from '../../../../model/game/reducers/nextMove';
 import { createUndoPrevMoveAction } from '../../../../model/game/reducers/undoPrevMove';
 import GameResultView from './GameResultView/gameResultView';
 import GridView from './GridView/GridView';
@@ -14,7 +14,7 @@ export interface GameBoardProps {
   receivedMoves: Move[];
   gameReducer: GameReducer;
   player: Player;
-  onNextMove: (move: Move) => void;
+  onNextMove: (gameState: GameState, move: Move) => void;
   onGameOver: (result: GameResult) => void;
 }
 
@@ -23,20 +23,13 @@ export default function GameBoard(props: GameBoardProps) {
 
   useEffect(() => {
     for (const move of props.receivedMoves) {
-      gameDispatch(createNextMoveAction({ move }));
+      gameDispatch(createNextMoveAction({ move, onMoveDone: null }));
     }
-  }, [props.receivedMoves]);
+  }, [gameDispatch, props.receivedMoves]);
 
   const onGridViewClick = (x: number, y: number) => {
     const move: Move = { player: props.player, coord: { x, y } };
-
-    if (!canMakeMove(gameState, move)) {
-      return;
-    }
-
-    gameDispatch(createNextMoveAction({ move }));
-
-    props.onNextMove(move);
+    gameDispatch(createNextMoveAction({ move, onMoveDone: props.onNextMove }));
   };
 
   if (isGameOver(gameState)) {

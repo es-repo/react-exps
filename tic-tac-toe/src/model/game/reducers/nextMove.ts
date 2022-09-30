@@ -1,9 +1,10 @@
 import { GameAction } from '../gameReducer';
-import { Coord, GameState, Grid, Move } from '../gameState';
+import { canMakeMove, Coord, GameState, Grid, Move } from '../gameState';
 import { Piece } from '../piece';
 
 export interface NextMoveActionPayload {
   move: Move;
+  onMoveDone: ((gameState: GameState, move: Move) => void) | null;
 }
 
 export interface NextMoveAction extends GameAction {
@@ -12,22 +13,6 @@ export interface NextMoveAction extends GameAction {
 
 export function createNextMoveAction(payload: NextMoveActionPayload): NextMoveAction {
   return { type: 'nextMove', payload };
-}
-
-export function canMakeMove(gameState: GameState, move: Move): boolean {
-  if (gameState.result != null || gameState.nextPlayer == null) {
-    return false;
-  }
-
-  if (gameState.grid[move.coord.x][move.coord.y] != null) {
-    return false;
-  }
-
-  if (gameState.nextPlayer.accountId != move.player.accountId) {
-    return false;
-  }
-
-  return true;
 }
 
 export default function nextMove(gameState: GameState, move: Move, sameInLineCount: number): GameState {

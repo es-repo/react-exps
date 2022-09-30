@@ -13,7 +13,6 @@ import AccessDeniedPage from '../pages/AccessDeniedPage/AccessDeniedPage';
 import { initiateOrJoinGameImpl } from '../../model/game/initiateGameOrJoin';
 import { waitForOpponentImpl } from '../../model/game/waitForOpponent';
 import { sendMoveImpl } from '../../model/game/sendMove';
-import { sendResultImpl } from '../../model/game/sendResult';
 import { receiveMovesImpl } from '../../model/game/receiveMoves';
 
 export default function App() {
@@ -51,8 +50,7 @@ export default function App() {
                   initiateOrJoinGame: initiateOrJoinGameImpl,
                   waitForOpponent: waitForOpponentImpl,
                   sendMove: sendMoveImpl,
-                  receiveMoves: receiveMovesImpl,
-                  sendResult: sendResultImpl
+                  receiveMoves: receiveMovesImpl
                 }}
                 gameSize={gameSize}
                 account={account}
