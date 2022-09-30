@@ -2,8 +2,8 @@ import React, { useEffect, useReducer } from 'react';
 import { GameReducer } from '../../../../model/game/gameReducer';
 import isGameOver, { GameResult, GameState, Move } from '../../../../model/game/gameState';
 import { Player } from '../../../../model/game/player';
-import { canMakeMove, NextMoveAction } from '../../../../model/game/reducers/nextMove';
-import { UndoPrevMoveAction } from '../../../../model/game/reducers/undoPrevMove';
+import { canMakeMove, createNextMoveAction } from '../../../../model/game/reducers/nextMove';
+import { createUndoPrevMoveAction } from '../../../../model/game/reducers/undoPrevMove';
 import GameResultView from './GameResultView/gameResultView';
 import GridView from './GridView/GridView';
 import PlayerView from './PlayerView/PlayerView';
@@ -23,12 +23,7 @@ export default function GameBoard(props: GameBoardProps) {
 
   useEffect(() => {
     for (const move of props.receivedMoves) {
-      const moveNextAction: NextMoveAction = {
-        type: 'nextMove',
-        move
-      };
-
-      gameDispatch(moveNextAction);
+      gameDispatch(createNextMoveAction({ move }));
     }
   }, [props.receivedMoves]);
 
@@ -39,11 +34,7 @@ export default function GameBoard(props: GameBoardProps) {
       return;
     }
 
-    const moveNextAction: NextMoveAction = {
-      type: 'nextMove',
-      move
-    };
-    gameDispatch(moveNextAction);
+    gameDispatch(createNextMoveAction({ move }));
 
     props.onNextMove(move);
   };
@@ -54,8 +45,7 @@ export default function GameBoard(props: GameBoardProps) {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onUndoPrevMove = () => {
-    const undoPrevMoveAction: UndoPrevMoveAction = { type: 'undoPrevMove' };
-    gameDispatch(undoPrevMoveAction);
+    gameDispatch(createUndoPrevMoveAction());
   };
 
   return (

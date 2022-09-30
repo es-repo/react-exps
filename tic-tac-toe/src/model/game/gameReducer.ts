@@ -14,7 +14,7 @@ export function createGameReducer(sameInLineCount: number): GameReducer {
   return function gameReducer(gameState: GameState, action: GameAction): GameState {
     switch (action.type) {
       case 'nextMove':
-        return nextMove(gameState, (action as NextMoveAction).move, sameInLineCount);
+        return nextMove(gameState, (action as NextMoveAction).payload.move, sameInLineCount);
       case 'undoPrevMove':
         return undoPrevMove(gameState);
       default:

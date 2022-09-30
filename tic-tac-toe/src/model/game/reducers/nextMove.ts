@@ -2,8 +2,16 @@ import { GameAction } from '../gameReducer';
 import { Coord, GameState, Grid, Move } from '../gameState';
 import { Piece } from '../piece';
 
-export interface NextMoveAction extends GameAction {
+export interface NextMoveActionPayload {
   move: Move;
+}
+
+export interface NextMoveAction extends GameAction {
+  payload: NextMoveActionPayload;
+}
+
+export function createNextMoveAction(payload: NextMoveActionPayload): NextMoveAction {
+  return { type: 'nextMove', payload };
 }
 
 export function canMakeMove(gameState: GameState, move: Move): boolean {
