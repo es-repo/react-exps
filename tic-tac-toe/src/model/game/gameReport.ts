@@ -1,5 +1,5 @@
 import { Identible } from '../identible';
-import { Move } from './gameState';
+import { GameResult, Move } from './gameState';
 import { Player } from './player';
 
 export interface GameReport extends Identible {
@@ -7,4 +7,5 @@ export interface GameReport extends Identible {
   player2: Player | null;
   gameSize: number;
   moves: Move[];
+  result: GameResult | null;
 }

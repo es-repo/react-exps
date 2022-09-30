@@ -1,7 +1,7 @@
 import collectionDefinition from './collectionDefinition';
 import { GameReport } from '../../model/game/gameReport';
 import { DocumentData } from 'firebase/firestore';
-import { Move } from '../../model/game/gameState';
+import { GameResult, Move } from '../../model/game/gameState';
 import { Piece } from '../../model/game/piece';
 import { Player } from '../../model/game/player';
 
@@ -24,6 +24,7 @@ export default function documentDataToGameReport(documentData: DocumentData, doc
     },
     player2: player2,
     gameSize: documentData[collectionDefinition.fields.gameSize] as number,
-    moves: (documentData[collectionDefinition.fields.moves] as string[]).map(m => JSON.parse(m) as Move)
+    moves: (documentData[collectionDefinition.fields.moves] as string[]).map(m => JSON.parse(m) as Move),
+    result: JSON.parse(documentData[collectionDefinition.fields.result] as string) as GameResult | null
   };
 }

@@ -11,6 +11,7 @@ export default function gameReportToDocumentData(gameReport: GameReport): Docume
     [collectionDefinition.fields.player2AccountEmail]: gameReport.player2?.accountEmail ?? null,
     [collectionDefinition.fields.player2Piece]: gameReport.player2?.piece ?? null,
     [collectionDefinition.fields.gameSize]: gameReport.gameSize,
-    [collectionDefinition.fields.moves]: gameReport.moves
+    [collectionDefinition.fields.moves]: gameReport.moves.map(move => JSON.stringify(move)),
+    [collectionDefinition.fields.result]: JSON.stringify(gameReport.result)
   };
 }

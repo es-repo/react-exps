@@ -12,6 +12,9 @@ import { Account } from '../../model/accounts/account';
 import AccessDeniedPage from '../pages/AccessDeniedPage/AccessDeniedPage';
 import { initiateOrJoinGameImpl } from '../../model/game/initiateGameOrJoin';
 import { waitForOpponentImpl } from '../../model/game/waitForOpponent';
+import { sendMoveImpl } from '../../model/game/sendMove';
+import { sendResultImpl } from '../../model/game/sendResult';
+import { receiveMovesImpl } from '../../model/game/receiveMoves';
 
 export default function App() {
   const [account, setAccount] = useState<Account | null>(null);
@@ -44,7 +47,13 @@ export default function App() {
             element={withPermissions(
               account,
               <GamePage
-                operations={{ initiateOrJoinGame: initiateOrJoinGameImpl, waitForOpponent: waitForOpponentImpl }}
+                operations={{
+                  initiateOrJoinGame: initiateOrJoinGameImpl,
+                  waitForOpponent: waitForOpponentImpl,
+                  sendMove: sendMoveImpl,
+                  receiveMoves: receiveMovesImpl,
+                  sendResult: sendResultImpl
+                }}
                 gameSize={gameSize}
                 account={account}
               />

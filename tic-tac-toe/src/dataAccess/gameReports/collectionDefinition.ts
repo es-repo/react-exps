@@ -8,7 +8,8 @@ const collectionDefinition = {
     player2AccountEmail: 'player2AccountEmail',
     player2Piece: 'player2Piece',
     gameSize: 'gameSize',
-    moves: 'moves'
+    moves: 'moves',
+    result: 'result'
   }
 };
 

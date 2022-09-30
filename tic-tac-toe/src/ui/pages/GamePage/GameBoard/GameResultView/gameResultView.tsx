@@ -3,18 +3,18 @@ import { Player } from '../../../../../model/game/player';
 import PieceView from '../PieceView/PieceView';
 import styles from './styles.module.css';
 
-export interface GameResultProps {
+export interface GameResultViewProps {
   wonPlayer: Player | null;
   isGameOver: boolean;
 }
 
-export default function GameResult(props: GameResultProps) {
+export default function GameResultView(props: GameResultViewProps) {
   if (!props.isGameOver) {
     return null;
   }
 
   return (
-    <div className={styles.GameResult}>
+    <div className={styles.GameResultView}>
       {props.wonPlayer != null ? (
         <>
           <div className={styles.pieceViewContainer}>

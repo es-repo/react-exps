@@ -6,27 +6,44 @@ export interface NextMoveAction extends GameAction {
   move: Move;
 }
 
-export default function nextMove(game: GameState, move: Move, sameInLineCount: number): GameState {
-  if (game.result != null || game.nextPlayer == null) {
-    return game;
+export function canMakeMove(gameState: GameState, move: Move): boolean {
+  if (gameState.result != null || gameState.nextPlayer == null) {
+    return false;
   }
 
-  if (game.grid[move.coord.x][move.coord.y] != null) {
-    return game;
+  if (gameState.grid[move.coord.x][move.coord.y] != null) {
+    return false;
   }
 
-  const nextGame = JSON.parse(JSON.stringify(game)) as GameState;
+  if (gameState.nextPlayer.accountId != move.player.accountId) {
+    return false;
+  }
+
+  return true;
+}
+
+export default function nextMove(gameState: GameState, move: Move, sameInLineCount: number): GameState {
+  if (!canMakeMove(gameState, move)) {
+    return gameState;
+  }
+
+  if (gameState.nextPlayer == null) {
+    return gameState;
+  }
+
+  const nextGame = JSON.parse(JSON.stringify(gameState)) as GameState;
 
   if (nextGame.nextPlayer != null) {
     nextGame.grid[move.coord.x][move.coord.y] = nextGame.nextPlayer.piece;
+    gameState.moves.push(move);
   }
 
   nextGame.nextPlayer =
     nextGame.nextPlayer!.accountId == nextGame.player1.accountId ? nextGame.player2 : nextGame.player1;
 
-  const winLine = findLine(nextGame.grid, game.nextPlayer.piece, sameInLineCount);
+  const winLine = findLine(nextGame.grid, gameState.nextPlayer.piece, sameInLineCount);
   if (winLine != null) {
-    nextGame.result = { wonPlayer: game.nextPlayer, winLine };
+    nextGame.result = { wonPlayer: gameState.nextPlayer, winLine };
     nextGame.nextPlayer = null;
   }
 

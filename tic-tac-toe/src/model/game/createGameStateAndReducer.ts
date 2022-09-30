@@ -25,6 +25,7 @@ export default function createGameStateAndReducer(
     player2,
     nextPlayer,
     grid,
+    moves: [],
     result: null
   };
 

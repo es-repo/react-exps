@@ -7,6 +7,7 @@ export interface Coord {
 }
 
 export interface Move {
+  player: Player;
   coord: Coord;
 }
 
@@ -22,6 +23,7 @@ export interface GameState {
   player2: Player;
   nextPlayer: Player | null;
   grid: Grid;
+  moves: Move[];
   result: GameResult | null;
 }
 

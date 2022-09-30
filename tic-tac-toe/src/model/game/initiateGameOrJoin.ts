@@ -34,7 +34,8 @@ export async function initiateOrJoinGame(
         piece: randomPiece()
       },
       player2: null,
-      moves: []
+      moves: [],
+      result: null
     };
 
     const gameReport = await addGameReport(newGameReport);
