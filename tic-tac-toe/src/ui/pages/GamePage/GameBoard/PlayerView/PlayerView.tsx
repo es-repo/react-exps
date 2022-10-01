@@ -15,7 +15,7 @@ export default function PlayerView(props: PlayerViewProps) {
       <div className={styles.pieceViewContainer}>
         <PieceView piece={props.player.piece} isWin={false} />
       </div>
-      <div>{props.player.accountEmail}</div>
+      <div className={styles.accountName}>{props.player.accountEmail}</div>
     </div>
   );
 }

@@ -3,12 +3,19 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.gridViewContainer {
+  width: 80vmin;
+  aspect-ratio: 1 / 1;
 }
 
 .playersPanel {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
+  width: 80vmin;
   padding: 0.5rem;
 }

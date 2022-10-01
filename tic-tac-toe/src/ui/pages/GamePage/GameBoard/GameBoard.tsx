@@ -48,7 +48,9 @@ export default function GameBoard(props: GameBoardProps) {
         <GameResultView isGameOver={isGameOver(gameState)} wonPlayer={gameState.result?.wonPlayer ?? null} />
         <PlayerView player={gameState.player2} isNext={gameState.nextPlayer == gameState.player2} />
       </div>
-      <GridView grid={gameState.grid} winLine={gameState.result?.winLine ?? null} onClick={onGridViewClick} />
+      <div className={styles.gridViewContainer}>
+        <GridView grid={gameState.grid} winLine={gameState.result?.winLine ?? null} onClick={onGridViewClick} />
+      </div>
     </div>
   );
 }

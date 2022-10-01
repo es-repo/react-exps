@@ -1,6 +1,6 @@
 .Logo {
   font-family: 'JMH SALOON';
-  font-size: 8rem;
+  font-size: 10vw;
   font-weight: bold;
   color: var(--color-header-text);
   text-shadow: 8px 8px var(--color-accent);

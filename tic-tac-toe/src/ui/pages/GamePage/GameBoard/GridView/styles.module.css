@@ -6,8 +6,7 @@
   background-color: var(--color-accent-light);
   padding: 0.5rem;
   border-radius: 1rem;
-  width: 50rem;
-  height: 50rem;
+  height: 100%;
 }
 
 .row {

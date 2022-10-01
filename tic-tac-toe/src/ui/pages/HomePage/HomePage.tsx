@@ -18,13 +18,13 @@ export default function HomePage() {
   return (
     <main>
       <div className='page-content'>
-        <div className={styles.logoContainer}>
+        <div className={styles.logoAndNavContainer}>
           <Logo />
+          <nav className={styles.signInSingUpNav}>
+            <button onClick={signInButtonClick}>Sign In</button>
+            <button onClick={signUpButtonClick}>Sign Up</button>
+          </nav>
         </div>
-        <nav className='SignInSingUpNav'>
-          <button onClick={signInButtonClick}>Sign In</button>
-          <button onClick={signUpButtonClick}>Sign Up</button>
-        </nav>
       </div>
     </main>
   );

@@ -2,7 +2,7 @@
   background-color: var(--color-button-back);
   display: flex;
   align-items: center;
-  min-width: 15rem;
+  width: 30%;
   color: var(--color-accent);
   font-weight: bold;
   border-radius: 0.5rem;
@@ -11,12 +11,20 @@
 }
 
 .pieceViewContainer {
-  margin-right: 10px;
-  width: 40px;
-  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 5vmin;
+  height: 5vmin;
 }
 
 .isNext {
   border: 0.5rem solid var(--color-accent);
   border-radius: 1rem;
+}
+
+.accountName {
+  inline-size: 80%;
+  overflow-wrap: break-word;
+  font-size: 3vmin;
 }

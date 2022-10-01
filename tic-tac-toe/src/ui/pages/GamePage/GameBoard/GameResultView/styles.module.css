@@ -5,7 +5,10 @@
 }
 
 .pieceViewContainer {
-  width: 40px;
-  height: 40px;
-  margin-right: 0.5rem;
+  width: 5vmin;
+  height: 5vmin;
+}
+
+.won {
+  font-size: 5vmin;
 }

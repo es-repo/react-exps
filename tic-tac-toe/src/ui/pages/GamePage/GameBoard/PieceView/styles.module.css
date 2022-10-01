@@ -6,15 +6,15 @@
 }
 
 .PieceOView {
-  height: 50%;
-  width: 50%;
-  border: 10px solid green;
+  min-height: 50%;
+  min-width: 50%;
+  border: 1vmin solid green;
   border-radius: 50%;
 }
 
 .PieceXView {
-  height: 100%;
-  width: 100%;
+  min-height: 100%;
+  min-width: 100%;
   position: relative;
   display: flex;
   align-items: center;
@@ -23,7 +23,7 @@
 
 .PieceXViewStick {
   width: 90%;
-  height: 10px;
+  height: 1vmin;
   border-radius: 4px;
   background-color: red;
   position: absolute;

@@ -35,12 +35,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--color-back);
   color: var(--color-text);
+  width: 100vw;
+  height: 100vh;
 }
 
 h1,
 h2 {
-  line-height: 1rem;
   color: var(--color-header-text);
+  text-align: center;
+  line-height: 1em;
 }
 
 h1 {
@@ -97,18 +100,32 @@ input[type='text'],
 input[type='password'],
 input[type='email'] {
   min-width: 20rem;
-  height: 2rem;
+  height: 3rem;
   font-size: var(--font-size-input);
   border-radius: var(--border-radius-control);
   border: none;
   padding: 0.5rem;
+  background-color: white;
+  color: #333;
+}
+
+button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 main {
-  min-height: 100vh;
+  height: 100%;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
 }
 
 .errorContainer {
@@ -116,8 +133,11 @@ main {
 }
 
 .page-content {
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 

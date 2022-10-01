@@ -20,7 +20,7 @@ export default function GameResultView(props: GameResultViewProps) {
           <div className={styles.pieceViewContainer}>
             <PieceView piece={props.wonPlayer.piece} isWin={false} />
           </div>
-          <h2>Won!</h2>
+          <h2 className={styles.won}>Won!</h2>
         </>
       ) : (
         <h2>Draw!</h2>

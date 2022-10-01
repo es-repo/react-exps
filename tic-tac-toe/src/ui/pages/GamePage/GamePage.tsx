@@ -95,7 +95,7 @@ export default function GamePage(props: GamePageProps) {
             <Spinner />
           </div>
         ) : (
-          <>
+          <div className={styles.boardContainer}>
             <GameBoard
               onGameOver={onGameOver}
               initialGameState={gameStateAndReducer[0]}
@@ -104,12 +104,13 @@ export default function GamePage(props: GamePageProps) {
               gameReducer={gameStateAndReducer[1]}
               onNextMove={onNextMove}
             />
+
             {isGameOver && (
               <button className='button-inverse' onClick={onNewGameClick}>
                 New game
               </button>
             )}
-          </>
+          </div>
         )}
       </div>
     </main>
